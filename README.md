@@ -98,19 +98,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Below is a simple diagram showing the interaction between the user, frontend, backend, and Rasa server:
 
 ```
-   +------------------+      +-------------------+      +------------------+
-   |                  |      |                   |      |                  |
-   |     User         +----->|    Frontend       +----->|    Backend       |
-   |  (Web Interface) |      |  (HTML, JS, CSS)  |      |   (Spring Boot)  |
-   |                  |      |                   |      |                  |
-   +------------------+      +-------------------+      +--------+---------+
-                                                             |
-                                                     +-------v-------+
-                                                     |               |
-                                                     |     Rasa     |
-                                                     |  (Chatbot)   |
-                                                     |               |
-                                                     +---------------+
++------------------+      +-------------------+      +------------------+      +------------------+
+|                  |      |                   |      |                  |      |                  |
+|     User         +----->|    Frontend       +----->|    Backend       +----->|     Rasa         |
+|  (Web Interface) |      |  (HTML, JS, CSS)  |      |   (Spring Boot)  |      |  (Chatbot)       |
+|                  |      |                   |      |                  |      |                  |
++------------------+      +-------------------+      +------------------+      +------------------+
+
 ```
 
 ### Description:
