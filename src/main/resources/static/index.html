@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chat-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: scroll;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .user-message {
+      background-color: #d1e7ff;
+      align-self: flex-end;
+    }
+
+    .bot-message {
+      background-color: #f1f1f1;
+      align-self: flex-start;
+    }
+
+    .input-container {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    #sendBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    #sendBtn:hover {
+      background-color: #0056b3;
+    }
+
+    #clearBtn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    #clearBtn:hover {
+      background-color: #e31a1a;
+    }
+
+    .loading {
+      color: #007bff;
+    }
+
+    .bot-reply {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2 style="text-align:center; padding: 10px 0;">Chat with Rasa Bot</h2>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Say something..." />
+      <button id="sendBtn" onclick="sendMessage()">Send</button>
+      <button id="clearBtn" onclick="clearChat()">Clear Chat</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to send user message and get bot reply
+    function sendMessage() {
+      const userMessage = document.getElementById('userInput').value;
+
+      if (userMessage.trim() === '') return;
+
+      // Display the user's message
+      appendMessage(userMessage, 'user');
+
+      // Clear input field
+      document.getElementById('userInput').value = '';
+
+      // Send message to the backend (Spring Boot Rasa service)
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message: userMessage})
+      })
+      .then(res => res.text())
+      .then(data => {
+        // Remove the loading message and display bot reply
+        const loadingMessage = document.querySelector('.loading');
+        if (loadingMessage) loadingMessage.remove();
+        appendMessage(data, 'bot');
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        const loadingMessage = document.querySelector('.loading');
+        if (loadingMessage) loadingMessage.remove();
+        appendMessage('Sorry, something went wrong. Please try again.', 'bot');
+      });
+    }
+
+    // Function to append a message to the chat box
+    function appendMessage(message, sender) {
+      const chatBox = document.getElementById('chatBox');
+      
+      // Create a new message div
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message');
+      messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+
+      // Set message text
+      messageDiv.innerText = message;
+      
+      // Append to chat box
+      chatBox.appendChild(messageDiv);
+      
+      // Scroll to the latest message
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Function to clear chat history
+    function clearChat() {
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML = ''; // Clear the chat box content
+    }
+
+    // Optional: To submit on 'Enter' key press
+    document.getElementById('userInput').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
