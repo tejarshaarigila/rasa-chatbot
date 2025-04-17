@@ -92,3 +92,31 @@ Feel free to fork the repository, submit pull requests, or open issues. Contribu
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
+
+### Architecture Diagram
+
+Below is a simple diagram showing the interaction between the user, frontend, backend, and Rasa server:
+
+```
+   +------------------+      +-------------------+      +------------------+
+   |                  |      |                   |      |                  |
+   |     User         +----->|    Frontend       +----->|    Backend       |
+   |  (Web Interface) |      |  (HTML, JS, CSS)  |      |   (Spring Boot)  |
+   |                  |      |                   |      |                  |
+   +------------------+      +-------------------+      +--------+---------+
+                                                             |
+                                                     +-------v-------+
+                                                     |               |
+                                                     |     Rasa     |
+                                                     |  (Chatbot)   |
+                                                     |               |
+                                                     +---------------+
+```
+
+### Description:
+- **User**: Interacts with the chatbot through the web interface (frontend).
+- **Frontend**: HTML, CSS, and JavaScript (Vanilla) are used to create a simple chat UI. It sends user messages to the backend via a REST API.
+- **Backend**: Spring Boot application that receives user messages from the frontend, communicates with the Rasa server, and returns responses to the frontend.
+- **Rasa**: The AI-based chatbot framework that processes user messages and generates responses.
+
+---
