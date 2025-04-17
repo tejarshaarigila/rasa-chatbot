@@ -100,8 +100,8 @@ Below is a simple diagram showing the interaction between the user, frontend, ba
 ```
 +------------------+      +-------------------+      +------------------+      +------------------+
 |                  |      |                   |      |                  |      |                  |
-|     User         +----->|    Frontend       +----->|    Backend       +----->|     Rasa         |
-|  (Web Interface) |      |  (HTML, JS, CSS)  |      |   (Spring Boot)  |      |  (Chatbot)       |
+|       User       |<---->|      Frontend     |<---->|      Backend     |<---->|       Rasa       |
+|  (Web Interface) |      |  (HTML, JS, CSS)  |      |   (Spring Boot)  |      |    (Chatbot)     |
 |                  |      |                   |      |                  |      |                  |
 +------------------+      +-------------------+      +------------------+      +------------------+
 
